@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.109/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.109/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+    <div id="cesiumContainer" style="width: 100%; height: 100vh;"></div>
+    <script>
+        const viewer = new Cesium.Viewer('cesiumContainer', {
+            imageryProvider: new Cesium.UrlTemplateImageryProvider({
+                url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+                credit: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
+            }),
+            baseLayerPicker: false,
+            geocoder: false,
+            homeButton: false,
+            infoBox: true,
+            sceneModePicker: false,
+            selectionIndicator: true,
+            timeline: false,
+            navigationHelpButton: false,
+            animation: false,
+            scene3DOnly: true
+        });
+
+        // Try to add OSM buildings
+        Cesium.createOsmBuildingsAsync().then(buildings => {
+            viewer.scene.primitives.add(buildings);
+        }).catch(err => console.error("OSM Buildings error:", err));
+
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(-97.7431, 30.2672, 2000), // Austin, TX area
+            duration: 0
+        });
+    </script>
+</body>
+</html>

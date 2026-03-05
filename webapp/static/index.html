@@ -3,31 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spy Satellite Simulator</title>
+    <title>WORLDVIEW Spy Satellite</title>
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.109/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="cesiumContainer"></div>
+    <div id="cesiumContainer" class="shader-crt"></div>
 
-    <div id="ui-panel">
-        <h1>SPATIAL OS :: WORLDVIEW</h1>
-        <div class="control-group">
-            <label for="shaderSelect">VISUAL MODE</label>
-            <select id="shaderSelect">
-                <option value="default">DEFAULT (EO)</option>
-                <option value="nvg">NIGHT VISION (NVG)</option>
-                <option value="flir">THERMAL (FLIR)</option>
-                <option value="crt">CRT MONITOR</option>
-            </select>
+    <div id="ui-layer">
+        <!-- TOP LEFT -->
+        <div class="panel top-left">
+            <div class="header">
+                <span class="icon">🌐</span> WORLDVIEW
+            </div>
+            <div class="sub-header">NO PLACE LEFT BEHIND</div>
+            <div class="classification">TOP SECRET // SI-TK // NOFORN<br>KM11-4166 OPS-4117</div>
+            <div class="title-crt">CRT</div>
+            <div class="subtitle">SQUADRON<br>CRT STREET NEAR TEXA</div>
+
+            <div class="controls-grid">
+                <button class="btn active">CCTV ON</button>
+                <button class="btn">NEAREST</button>
+                <button class="btn">PREV</button>
+                <button class="btn dropdown">Austin SAT ▼</button>
+                <button class="btn">NEXT</button>
+                <button class="btn">FOCUS</button>
+                <button class="btn">COVERAGE OFF</button>
+                <button class="btn">AUTO HOP OFF</button>
+                <button class="btn active">PROJECTION ON</button>
+                <button class="btn">AUTO CAL</button>
+                <button class="btn double">ALIGN - DRAPE</button>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-row"><span>X</span><span>0°</span></div>
+                <div class="metric-row"><span>Y</span><span>-2°</span></div>
+                <div class="metric-row"><span>Z</span><span>100%</span></div>
+                <div class="metric-row"><span>P</span><span>0m</span></div>
+                <div class="metric-row"><span>R</span><span>0m</span></div>
+            </div>
+
+            <div class="graph-placeholder">
+                <div class="graph-line"></div>
+                <div class="graph-dots">
+                    <span style="top: 20%; left: 20%;"></span>
+                    <span style="top: 40%; left: 40%;"></span>
+                    <span style="top: 80%; left: 60%;"></span>
+                    <span style="top: 30%; left: 80%;"></span>
+                </div>
+            </div>
+
+            <div class="bottom-buttons">
+                <button class="btn">SAVE CAL</button>
+                <button class="btn">RESET CAL</button>
+            </div>
         </div>
-        <div class="stats">
-            <div>SATELLITES TRACKED: <span id="satCount">0</span></div>
-            <div>AIRCRAFT TRACKED: <span id="airCount">0</span></div>
+
+        <!-- BOTTOM LEFT (Mini map / Video feed) -->
+        <div class="panel bottom-left">
+            <div class="video-feed">
+                <div class="time-overlay">0:16</div>
+                <div class="feed-text">Austin HOG 135° FOV 54° RANGE 226m - DRAPE<br>HIGH - Austin Transportation & Public Works</div>
+            </div>
         </div>
-        <div class="status-box">
-            <div class="blink">SYSTEM ONLINE</div>
-            <div>DATALINK: ACTIVE</div>
+
+        <!-- BOTTOM CENTER -->
+        <div class="panel bottom-center">
+            <div class="location-tabs">
+                <button class="tab active">Texas State Capitol</button>
+                <button class="tab">Frost Bank Tower</button>
+                <button class="tab">Pennybacker Bridge</button>
+                <button class="tab">The Jenga Tower</button>
+                <button class="tab">UT Tower</button>
+            </div>
+            <div class="cities">
+                <span class="active">Austin</span>
+                <span>San Francisco</span>
+                <span>New York</span>
+                <span>Tokyo</span>
+                <span>London</span>
+                <span>Paris</span>
+                <span>Dubai</span>
+                <span>Washington DC</span>
+            </div>
+            <div class="visual-modes" id="shaderSelectGroup">
+                <button class="mode-btn" data-mode="default"><span class="icon">⭕</span> Normal</button>
+                <button class="mode-btn active" data-mode="crt"><span class="icon">📺</span> CRT</button>
+                <button class="mode-btn" data-mode="nvg"><span class="icon">🌙</span> NVG</button>
+                <button class="mode-btn" data-mode="flir"><span class="icon">🌡️</span> FLIR</button>
+                <button class="mode-btn" data-mode="anime"><span class="icon">✨</span> Anime</button>
+                <button class="mode-btn" data-mode="noir"><span class="icon">🌑</span> Noir</button>
+                <button class="mode-btn" data-mode="snow"><span class="icon">❄️</span> Snow</button>
+                <button class="mode-btn" data-mode="ai"><span class="icon">🧠</span> AI</button>
+            </div>
+        </div>
+
+        <!-- TOP RIGHT -->
+        <div class="panel top-right">
+            <div class="rec-info">
+                <div class="rec-blink">REC 2026-02-12 02:52:18Z</div>
+                <div class="orb-info">ORB: 67459 PASS: DESC-179</div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-group">
+                    <div class="slider-header"><span class="checkbox active"></span> BLOOM</div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="0" max="100" value="100" class="cyber-slider">
+                        <div class="slider-val">100%</div>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header"><span class="checkbox"></span> SHARPEN</div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="0" max="100" value="56" class="cyber-slider">
+                        <div class="slider-val">56%</div>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">HUD</div>
+                    <select class="cyber-select"><option>Tactical</option></select>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header"><span class="checkbox active"></span> PANOPTIC</div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="0" max="100" value="76" class="cyber-slider">
+                        <div class="slider-val">76%</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn clean-ui">CLEAN UI</button>
+
+            <div class="parameters">
+                <div class="param-title">PARAMETERS</div>
+                <div class="param-row">
+                    <span>Pixelation</span>
+                    <input type="range" min="0" max="100" value="20" class="cyber-slider small">
+                </div>
+                <div class="param-row">
+                    <span>Distortion</span>
+                    <input type="range" min="0" max="100" value="10" class="cyber-slider small">
+                </div>
+                <div class="param-row">
+                    <span>Instability</span>
+                    <input type="range" min="0" max="100" value="5" class="cyber-slider small">
+                </div>
+            </div>
+
+            <div class="telemetry">
+                GSD: 0.30m NIIRS: 6.7<br>
+                ALT: 800M SUN: -37.5° EL<br>
+                SAT: <span id="satCount">0</span> AIR: <span id="airCount">0</span>
+            </div>
         </div>
     </div>
 
