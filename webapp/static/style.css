@@ -1,0 +1,106 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    font-family: "Courier New", Courier, monospace;
+}
+
+#cesiumContainer {
+    width: 100%;
+    height: 100%;
+    transition: filter 0.5s ease-in-out;
+}
+
+#ui-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    background-color: rgba(0, 20, 0, 0.8);
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    z-index: 10;
+    pointer-events: auto;
+}
+
+#ui-panel h1 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    border-bottom: 1px solid #0f0;
+    padding-bottom: 10px;
+}
+
+.control-group {
+    margin-top: 20px;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.control-group select {
+    width: 100%;
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+    padding: 5px;
+    font-family: inherit;
+}
+
+.stats {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.status-box {
+    margin-top: 20px;
+    border: 1px solid #0f0;
+    padding: 10px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Shaders / Post-processing filters */
+
+.shader-nvg {
+    filter: sepia(100%) hue-rotate(60deg) saturate(200%) brightness(1.2) contrast(1.5);
+}
+
+.shader-flir {
+    filter: grayscale(100%) invert(100%) brightness(1.5) contrast(2);
+}
+
+.shader-crt {
+    filter: brightness(1.2) contrast(1.2) sepia(20%) hue-rotate(180deg) blur(0.5px);
+    position: relative;
+}
+
+.shader-crt::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
